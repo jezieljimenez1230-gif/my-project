@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thank You Surprise 🎁</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+body{
+  margin:0;
+  font-family:'Quicksand',sans-serif;
+  background:linear-gradient(135deg,#ff9ec4,#ffcce0);
+  height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  text-align:center;
+  color:white;
+}
+
+/* GIFT */
+#gift{
+  font-size:80px;
+  position:absolute;
+  top:40%;
+  transform:translateY(-50%);
+  cursor:pointer;
+}
+@keyframes drop{ to{ top:40%; } }
+
+/* MESSAGES */
+#message1,#message2{
+  display:none;
+  position:absolute;
+  max-width:320px;
+  background:rgba(255,255,255,0.35);
+  padding:20px;
+  border-radius:20px;
+  top:40%;
+  transform:translateY(120px);
+  font-size:1.1em;
+  line-height:1.5;
+}
+
+/* BALLOON */
+#balloon{
+  display:none;
+  font-size:70px;
+  position:absolute;
+  bottom:-100px;
+  animation:rise 2s forwards;
+  cursor:pointer;
+}
+@keyframes rise{ to{ bottom:50%; } }
+
+/* POP animation */
+.pop{
+  animation:pop 0.4s forwards;
+}
+@keyframes pop{
+  0%{ transform:scale(1); }
+  50%{ transform:scale(1.4); }
+  100%{ transform:scale(0); opacity:0; }
+}
+
+/* CONFETTI */
+.confetti{
+  position:absolute;
+  width:8px;
+  height:8px;
+  background:#ff69b4;
+  animation:fall 3s linear forwards;
+}
+@keyframes fall{
+  to{ transform:translateY(100vh); opacity:0; }
+}
+</style>
+</head>
+
+<body>
+
+<div id="gift" onclick="clickGift()">🎁</div>
+
+<div id="message1"></div>
+
+<div id="balloon" onclick="popBalloon()">🎈</div>
+
+<div id="message2"></div>
+
+<!-- sounds -->
+<audio id="openSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3"></audio>
+<audio id="popSound" src="https://cdn.pixabay.com/download/audio/2022/03/10/audio_5b6cc3a2f4.mp3"></audio>
+
+<script>
+let clicks=0;
+
+const text1 = "💖 Thank you for encouraging me to practice Web Stack Development tita! 💖";
+const text2 = "💗 Thank you for taking care of me tita, I really appreciate everything you do 😽💗";
+
+function clickGift(){
+  clicks++;
+
+  if(clicks===3){
+    document.getElementById("gift").style.display="none";
+    document.getElementById("openSound").play();
+
+    showConfetti();
+    typeText("message1", text1);
+
+    setTimeout(()=>{
+      document.getElementById("balloon").style.display="block";
+    },2000);
+  }
+}
+
+function showConfetti(){
+  for(let i=0;i<100;i++){
+    const c=document.createElement("div");
+    c.classList.add("confetti");
+    c.style.left=Math.random()*100+"vw";
+    c.style.top="-10px";
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),3000);
+  }
+}
+
+function popBalloon(){
+  const b = document.getElementById("balloon");
+  b.classList.add("pop");
+  document.getElementById("popSound").play();
+
+  setTimeout(()=>{
+    b.style.display="none";
+    typeText("message2", text2);
+  },400);
+}
+
+function typeText(id, text){
+  const el=document.getElementById(id);
+  el.style.display="block";
+  el.innerHTML="";
+
+  let i=0;
+  function typing(){
+    if(i<text.length){
+      el.innerHTML+=text.charAt(i);
+      i++;
+      setTimeout(typing,40);
+    }
+  }
+  typing();
+}
+</script>
+
+</body>
+</html>
